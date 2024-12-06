@@ -12,6 +12,7 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
+      input: './main.js',
       output: {
         manualChunks: () => 'main.js',
         entryFileNames: 'assets/main.js',  // this controls the output filename
