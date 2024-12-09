@@ -2,6 +2,7 @@ export function adjustVolume(video, targetVolume, duration = 500, ramping) {
   // Unmute if ramping up the volume
   if (targetVolume > 0) { 
     video.muted = false;
+    video.volume = 0;  
     ramping = true;
   }
   

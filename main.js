@@ -6,6 +6,9 @@ window.Webflow.push(() => {
   // play videos in view
   const movies = document.querySelectorAll(".video-loop-container");
 
+  // set ramp time in ms
+  const rampTime = 500;
+
   movies.forEach((item) => {
     const vid = item.querySelector(".video-loop");
     const muteImg = item.querySelector(".vol-img");
@@ -19,11 +22,11 @@ window.Webflow.push(() => {
           function handleClick(event) {
             if (!volRamping) {
               if (vid.muted) {
-                adjustVolume(vid, 1, 500, volRamping);
+                adjustVolume(vid, 1, rampTime, volRamping);
                 onImg.style.opacity = 1;
                 muteImg.style.opacity = 0;
               } else {
-                adjustVolume(vid, 0, 500, volRamping);
+                adjustVolume(vid, 0, rampTime, volRamping);
                 onImg.style.opacity = 0;
                 muteImg.style.opacity = 1;
               }
@@ -44,21 +47,33 @@ window.Webflow.push(() => {
               vid.setAttribute("data-click-added", true);
             }
           } else {
+            
+            adjustVolume(vid, 0, rampTime, volRamping);
+            onImg.style.opacity = 0;
+            muteImg.style.opacity = 1;
+            
             // pause playback
-            vid.pause();
+            setTimeout(() => {
+              vid.pause();
+              console.log("video paused", volRamping);
+              
+            }, rampTime);
 
             // mute the item
             vid.muted = true;
 
-            // remove event listener
-            if (vid.hasAttribute("data-click-added")) {
-              vid.removeEventListener("click", handleClick);
-              vid.removeAttribute("data-click-added");
-            }
+            // // remove event listener
+            // if (vid.hasAttribute("data-click-added")) {
+            //   vid.removeEventListener("click", handleClick);
+            //   vid.removeAttribute("data-click-added");
+            // }
           }
         });
-      },
-      { threshold: 0 }
+      }, { 
+        root: document.querySelector('.swiper-container'), // Set Swiper container as the root
+        rootMargin: '0px',
+        threshold: 1 // Adjust threshold based on your needs
+      }
     );
 
     observer.observe(vid);
