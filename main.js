@@ -2,9 +2,37 @@ import { adjustVolume, playVideo } from "./helpers.js";
 
 // make sure webflow content is loaded to DOM
 window.Webflow.push(() => {
+  // add language swithc functionality
+  // select the button container
+  const buttonContainer = document.querySelector(".language-buttons");
+  const englishTexts = document.querySelectorAll(".lang-english");
+  const marathiTexts = document.querySelectorAll(".lang-marathi"); 
+  console.log("did we accept?", englishTexts) 
+  
+  function showLanguage(showElements, hideElements) {
+    showElements.forEach( el => {
+      el.style.opacity = 1;
+    });
+    
+    hideElements.forEach(el => {
+      el.style.opacity = 0;
+    });
+  }
+  
+  buttonContainer.addEventListener("click", function languageSelect(e) {
+    if( e.target.id && e.target.id === 'english' ) {
+      showLanguage( englishTexts, marathiTexts);
+    } else {
+      showLanguage( marathiTexts, englishTexts );
+    }
+  });
+ 
+  // init english
+  showLanguage( englishTexts, marathiTexts);
 
   // play videos in view
   const movies = document.querySelectorAll(".video-loop-container");
+
 
   // set ramp time in ms
   const rampTime = 500;
